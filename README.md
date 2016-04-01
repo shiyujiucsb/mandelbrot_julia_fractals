@@ -3,7 +3,7 @@
 This project plots Mandelbrot and Julia sets using Python 3 + cImage.
 The goal is to let everyone freely verify the correctness of fractal images on the Internet.
 Wikipedia gives great articles and references about the related concepts here. 
-This program considers the iteration: z = z^2 + c.
+This program considers the iteration: \(z \gets z^2 + c\).
 
 
 ## Requirements
@@ -32,7 +32,7 @@ We discuss the parameters for these two main functions.
 The definition of the function mandelbrot() is as follows:
 
 ```python
-def mandelbrot (...): # below are param spec
+def mandelbrot (...): # below are the param spec for this function
 ```
 
 * __ofile__: the filename to save
@@ -74,10 +74,11 @@ For instance,
 * for round 100, since the curve is straight, the color will R = G = B = 100 + (255 - 100)/3, which is about 152.
 * for round 210, the color is the same as round 210 - 120 = 90.
 
-The parameters for julia() function are similarly defined.
+The parameters for julia() function are similarly defined, except that the default c is -0.4 + 0.6j.
 				
 Note that all the default settings are from Wikipedia article: Mandelbrot set.		
 
 ## Licensing
 
 This program is under CC0 license.
+Everyone is free to participate and share with comments and suggestions!
