@@ -30,7 +30,7 @@ We discuss the parameters for these two main functions.
 The definition of the function mandelbrot() is as follows:
 
 ```python
-def **mandelbrot**
+def mandelbrot
 ```
 
 * __ofile__: the filename to save
@@ -47,7 +47,7 @@ def **mandelbrot**
 				
 * __max_iter__: number of maximum iterations, the more the better quality, but will take more time
 				
-* __gradient__: 
+* __gradient__: the most complicated argument
 	* The points to define the gradient.
 	* The 'index' is the number of iteration to exit.
 	* The colors will be repeatedly used round by round.
@@ -56,21 +56,21 @@ def **mandelbrot**
 	
 ### An example of gradient profile
 
-	```python
-		gradient = [\
-						{'index':0, 'color':{'R':0, 'G':0, 'B':0}},\
-						{'index':30, 'color':{'R':10, 'G':10, 'B':10}},\
-						{'index':60, 'color':{'R':50, 'G':50, 'B':50}}, \
-						{'index':90, 'color':{'R':100, 'G':100, 'B':100}}, \
-						{'index':120, 'color':{'R':255, 'G':255, 'B':255}} \
-					], \
-	```
-	In this example, we define the gradient of the colors by specifying 5 color points, all of which are greyscale, i.e., R = G = B. 
-	For each large round, the color will choose from black to white. All the Bezier curves are straight lines. 
-	For instance, 
-	* for round 30, the color will be R = G = B = 10.
-	* for round 100, since the curve is straight, the color will R = G = B = 100 + (255 - 100)/3, which is about 152.
-	* for round 210, the color is the same as round 210 - 120 = 90.
+```python
+	gradient = [\
+					{'index':0, 'color':{'R':0, 'G':0, 'B':0}},\
+					{'index':30, 'color':{'R':10, 'G':10, 'B':10}},\
+					{'index':60, 'color':{'R':50, 'G':50, 'B':50}}, \
+					{'index':90, 'color':{'R':100, 'G':100, 'B':100}}, \
+					{'index':120, 'color':{'R':255, 'G':255, 'B':255}} \
+				], \
+```
+In this example, we define the gradient of the colors by specifying 5 color points, all of which are greyscale, i.e., R = G = B. 
+For each large round, the color will choose from black to white. All the Bezier curves are straight lines. 
+For instance, 
+* for round 30, the color will be R = G = B = 10.
+* for round 100, since the curve is straight, the color will R = G = B = 100 + (255 - 100)/3, which is about 152.
+* for round 210, the color is the same as round 210 - 120 = 90.
 
 The parameters for julia() function are similarly defined.
 				
