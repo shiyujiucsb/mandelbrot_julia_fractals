@@ -3,7 +3,7 @@
 This project plots Mandelbrot and Julia sets using Python 3 + cImage.
 The goal is to let everyone freely verify the correctness of fractal images on the Internet.
 Wikipedia gives great articles and references about the related concepts here. 
-This program considers the iteration: $z \gets z^2 + c$.
+This program considers the iteration: ```math_def z \gets z^2 + c```.
 
 
 ## Requirements
