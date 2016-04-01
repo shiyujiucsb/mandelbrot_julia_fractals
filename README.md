@@ -4,7 +4,7 @@ This project plots Mandelbrot and Julia sets using Python 3 + cImage.
 The goal is to let everyone freely verify the correctness of fractal images on the Internet.
 
 
-## Prerequisites
+## Requirements
 
 This program needs python 3.4+ and cImage. To install cImage, please follow the link:
 http://wp.stolaf.edu/it/installing-pil-pillow-cimage-on-windows-and-mac/

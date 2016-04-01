@@ -1,3 +1,132 @@
+#!/usr/bin/python3
+ 
+"""
+Prelim:
+Mandelbrot set z <- z^2 + c includes all c, |c| < 2 such that lim|z| < 2, where z0 =(0,0) 
+
+Function:
+To plot a mandelbrot set. The parameter details are given below.
+"""
+def mandelbrot( ofile = '', \
+                # file to save
+                width = 960, \
+                # width of the plot image
+                height = 720, \
+                # height of the plot image
+                cx = -0.7, \
+                # real part of the complex number at the center of the plot
+                cy = 0, \
+                # imaginary part of the complex number at the center of the plot
+                w = 3.0769, \
+                # real part difference between leftmost and rightmost of the plot
+                max_iter = 50000, \
+                # number of maximum iterations
+                gradient = [\
+                    {'index':0, 'color':{'R':0, 'G':0, 'B':90}},\
+                    {'index':28, 'color':{'R':0, 'G':7, 'B':100}},\
+                    {'index':92, 'color':{'R':32, 'G':107, 'B':203}}, \
+                    {'index':196, 'color':{'R':237, 'G':255, 'B':255}}, \
+                    {'index':285, 'color':{'R':255, 'G':170, 'B':0}}, \
+                    {'index':371, 'color':{'R':49, 'G':2, 'B':48}},\
+                    {'index':500, 'color':{'R':0, 'G':0, 'B':90}}\
+                ], \
+                # the points to define the gradient
+                # index is the number of iteration to exit
+                # the colors will be repeatedly used for each round
+                ) : 
+                
+    # check the format of the gradient as input
+    if check_gradient_profile(gradient) == False:
+        return # means failed the check
+            
+    import cImage
+    from cImage import Pixel
+    
+    myimagewindow = cImage.ImageWin('Mandelbrot',width,height)
+    NewImage = cImage.EmptyImage(width,height)
+    
+    colors = define_colors(max_iter, gradient)
+
+    # imaginary part difference between top and bottom
+    h = w/width*height
+    # plot the set
+    progress = 1
+    for i in range(width):
+        for j in range(height):
+            c = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
+            NewImage.setPixel(i,j,m_color(c, max_iter, colors))
+        # refresh the screen to reflect what've been drawn
+        if (i+1)/width > progress/10:
+            NewImage.setPosition(0,0)
+            NewImage.draw(myimagewindow)
+            progress += 1
+    NewImage.setPosition(0,0)
+    NewImage.draw(myimagewindow)
+    if ofile != '' : 
+        NewImage.save(ofile)
+    myimagewindow.exitOnClick()
+
+
+"""
+Prelim:
+Julia set z <- z^2 + c for a given complex c, includes all z0, |z0|<2 such that lim|z|<2
+e.g., try c = (-0.123, 0.745), c = (-0.75,0), c = (-0.391, -0.587).
+
+All the other parameters are the same as the Mandelbrot function.
+"""
+def julia(      c = -0.4+0.6j, \
+                ofile = '', \
+                width = 800, \
+                height = 800, \
+                cx = 0, \
+                cy = 0, \
+                w = 4, \
+                max_iter = 50000, \
+                gradient = [\
+                    {'index':0, 'color':{'R':0, 'G':0, 'B':90}},\
+                    {'index':28, 'color':{'R':0, 'G':7, 'B':100}},\
+                    {'index':92, 'color':{'R':32, 'G':107, 'B':203}}, \
+                    {'index':196, 'color':{'R':237, 'G':255, 'B':255}}, \
+                    {'index':285, 'color':{'R':255, 'G':170, 'B':0}}, \
+                    {'index':371, 'color':{'R':49, 'G':2, 'B':48}},\
+                    {'index':500, 'color':{'R':0, 'G':0, 'B':90}}\
+                ], \
+        ) :
+        
+    # check the format of the gradient as input
+    if check_gradient_profile(gradient) == False:
+        return # means failed the check
+            
+    import cImage
+    from cImage import Pixel
+    
+    myimagewindow = cImage.ImageWin('Julia',width,height)
+    NewImage = cImage.EmptyImage(width,height)
+    
+    colors = define_colors(max_iter, gradient)
+
+    # imaginary part difference between top and bottom
+    h = w/width*height
+    # plot the set
+    progress = 1
+    for i in range(width):
+        for j in range(height):
+            z0 = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
+            NewImage.setPixel(i,j,j_color(c, z0, max_iter, colors))
+        # refresh the screen to reflect what've been drawn
+        if (i+1)/width > progress/10:
+            NewImage.setPosition(0,0)
+            NewImage.draw(myimagewindow)
+            progress += 1
+    NewImage.setPosition(0,0)
+    NewImage.draw(myimagewindow)
+    if ofile != '' : 
+        NewImage.save(ofile)
+    myimagewindow.exitOnClick()
+
+
+
+# Below are other functions.
 
 '''
 Function:
@@ -54,57 +183,16 @@ def j_color(c, z0, max_iter, colors):
             return colors[i]
     return Pixel(0,0,0)
 
-
-"""
-Prelim:
-Mandelbrot set z <- z^2 + c includes all c, |c| < 2 such that lim|z| < 2, where z0 =(0,0) 
-
+'''
 Function:
-To plot a mandelbrot set. The parameter details are given below.
-"""
-def mandelbrot( ofile = '', \
-                # file to save
-                width = 960, \
-                # width of the plot image
-                height = 720, \
-                # height of the plot image
-                cx = -0.7, \
-                # real part of the complex number at the center of the plot
-                cy = 0, \
-                # imaginary part of the complex number at the center of the plot
-                w = 3.0769, \
-                # real part difference between leftmost and rightmost of the plot
-                max_iter = 50000, \
-                # number of maximum iterations
-                gradient = [\
-                    {'index':0, 'color':{'R':0, 'G':0, 'B':90}},\
-                    {'index':28, 'color':{'R':0, 'G':7, 'B':100}},\
-                    {'index':92, 'color':{'R':32, 'G':107, 'B':203}}, \
-                    {'index':196, 'color':{'R':237, 'G':255, 'B':255}}, \
-                    {'index':285, 'color':{'R':255, 'G':170, 'B':0}}, \
-                    {'index':371, 'color':{'R':49, 'G':2, 'B':48}},\
-                    {'index':500, 'color':{'R':0, 'G':0, 'B':90}}\
-                ], \
-                # the points to define the gradient
-                # index is the number of iteration to exit
-                # the colors will be repeatedly used for each round
-                ) : 
-    # check the format of the gradient as input
-    if gradient[0]['index'] != 0:
-        print('The first index of gradient must be 0.')
-        return
-    for i in range(len(gradient)):
-        if 'index' not in gradient[i].keys() or 'color' not in gradient[i].keys():
-            print('Each entry must contain an index and a color.')
-            return
-            
-    import cImage
-    from cImage import Pixel
-    
-    myimagewindow = cImage.ImageWin('Mandelbrot',width,height)
-    NewImage = cImage.EmptyImage(width,height)
-    
+Define the color for each round to exit the iteration.
+
+Parameters: max_iter is the maximum no. of iterations to observe.
+    gradient is the color profile.
+'''
+def define_colors(max_iter, gradient):
     # prepare the colors
+    from cImage import Pixel
     colors = []
     period = gradient[-1]['index']
     for i in range(max_iter):
@@ -124,102 +212,28 @@ def mandelbrot( ofile = '', \
         G = 0 if G<0 else 255 if G>255 else G
         B = 0 if B<0 else 255 if B>255 else B
         colors.append(Pixel(int(R), int(G), int(B)))
+    return colors
 
-    # imaginary part difference between top and bottom
-    h = w/width*height
-    # plot the set
-    progress = 1
-    for i in range(width):
-        for j in range(height):
-            c = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.setPixel(i,j,m_color(c, max_iter, colors))
-        # refresh the screen to reflect what've been drawn
-        if (i+1)/width > progress/10:
-            NewImage.setPosition(0,0)
-            NewImage.draw(myimagewindow)
-            progress += 1
-    NewImage.setPosition(0,0)
-    NewImage.draw(myimagewindow)
-    if ofile != '' : 
-        NewImage.save(ofile)
-    myimagewindow.exitOnClick()
-
-
-"""
-Julia set z <- z^2 + c for a given complex c, includes all z0, |z0|<2 such that lim|z|<2
-e.g., try c = (-0.123, 0.745), c = (-0.75,0), c = (-0.391, -0.587).
-
-All the other parameters are the same as the Mandelbrot function.
-"""
-def julia(      c = -0.4+0.6j, \
-                ofile = '', \
-                width = 800, \
-                height = 800, \
-                cx = 0, \
-                cy = 0, \
-                w = 4, \
-                max_iter = 50000, \
-                gradient = [\
-                    {'index':0, 'color':{'R':0, 'G':0, 'B':90}},\
-                    {'index':28, 'color':{'R':0, 'G':7, 'B':100}},\
-                    {'index':92, 'color':{'R':32, 'G':107, 'B':203}}, \
-                    {'index':196, 'color':{'R':237, 'G':255, 'B':255}}, \
-                    {'index':285, 'color':{'R':255, 'G':170, 'B':0}}, \
-                    {'index':371, 'color':{'R':49, 'G':2, 'B':48}},\
-                    {'index':500, 'color':{'R':0, 'G':0, 'B':90}}\
-                ], \
-        ) :
+'''
+Function:
+Check whether the format of the profile 'gradient' is correct.
+The details are given as inline comments as below.
+'''
+def check_gradient_profile(gradient):
     # check the format of the gradient as input
     if gradient[0]['index'] != 0:
         print('The first index of gradient must be 0.')
-        return
+        return False
     for i in range(len(gradient)):
         if 'index' not in gradient[i].keys() or 'color' not in gradient[i].keys():
             print('Each entry must contain an index and a color.')
-            return
-            
-    import cImage
-    from cImage import Pixel
-    
-    myimagewindow = cImage.ImageWin('Julia',width,height)
-    NewImage = cImage.EmptyImage(width,height)
-    
-    # prepare the colors
-    colors = []
-    period = gradient[-1]['index']
-    for i in range(max_iter):
-        for j in range(len(gradient)):
-            if gradient[j]['index'] > i%period:
-                start_ind = gradient[j-1]['index']
-                end_ind = gradient[j]['index']
-                start_color = gradient[j-1]['color']
-                end_color = gradient[j]['color']
-                t = (i%period-start_ind)/(end_ind-start_ind)
-                anchors = {}
-                if 'anchors' in gradient[j].keys():
-                    anchors = gradient[j]['anchors']
-                break
-        R, G, B = bezier(t, start_color, end_color, anchors)
-        R = 0 if R<0 else 255 if R>255 else R
-        G = 0 if G<0 else 255 if G>255 else G
-        B = 0 if B<0 else 255 if B>255 else B
-        colors.append(Pixel(int(R), int(G), int(B)))
+            return False
+        if 'R' not in gradient[i]['color'] or 'G' not in gradient[i]['color'] or 'B' not in gradient[i]['color']:
+            print('Need give RGB for index ', gradient[i]['index'])
+            return False
+        if i>0:
+            if gradient[i]['index'] < gradient[i-1]['index']:
+                print('The index must be in ascending order.')
+                return False
+    return True
 
-    # imaginary part difference between top and bottom
-    h = w/width*height
-    # plot the set
-    progress = 1
-    for i in range(width):
-        for j in range(height):
-            z0 = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.setPixel(i,j,j_color(c, z0, max_iter, colors))
-        # refresh the screen to reflect what've been drawn
-        if (i+1)/width > progress/10:
-            NewImage.setPosition(0,0)
-            NewImage.draw(myimagewindow)
-            progress += 1
-    NewImage.setPosition(0,0)
-    NewImage.draw(myimagewindow)
-    if ofile != '' : 
-        NewImage.save(ofile)
-    myimagewindow.exitOnClick()
