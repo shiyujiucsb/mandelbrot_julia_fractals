@@ -2,15 +2,17 @@
 
 This project plots Mandelbrot and Julia sets using Python 3 + cImage.
 The goal is to let everyone freely verify the correctness of fractal images on the Internet.
+Wikipedia gives great articles and references about the related concepts here. 
+This program considers the iteration: z = z^2 + c.
 
 
 ## Requirements
 
-This program needs python 3.4+ and cImage. To install cImage, please follow the link:
+This program needs **Python** 3.4+ and **cImage**. To install cImage, please follow the link:
 http://wp.stolaf.edu/it/installing-pil-pillow-cimage-on-windows-and-mac/
 
 A few words about the fractals: 
-* Each point within the Mandelbrot/Julia set is supposed to be black.
+* Each point within the Mandelbrot/Julia set is supposed to be __black__.
 * The color of each point outside the set is decided by the number of rounds this point takes to exit the iterations.
 * The function mapping the number of rounds to the color is given by the parameter gradient (see below), which contains a few colors that we should use in plot for certain indices. Each index corresponds to some number of rounds to exit the iterations. 
 	* Optionally one may also define Bezier curves between the color points. That is, suppose the RGB color space as a 3-dim cube with edge length of 256. To choose different patterns of color choice, one can define Bezier curves between two adjacent colors. In other words, the program chooses the colors along the Bezier curves, arriving at color points correspondingly to the indices. See below for a little example.
