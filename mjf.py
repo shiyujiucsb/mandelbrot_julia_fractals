@@ -2,7 +2,8 @@
 '''
 Function:
 Bezier curve calculation.
-The number of points to define can be arbitrary.
+The number of points to define can be arbitrary. The points are in the parameter anchors.
+The function takes a recursion to calculate the curve.
 '''
 def bezier(t, start, end, anchors):  
     if len(anchors)==0:
@@ -18,7 +19,7 @@ Function:
 To determine the color of each pixel for Mandelbrot set.
 
 c is the complex number of the point. max_iter is the maximum number of iterations.
-colors are all the colors to use.
+colors are all the colors to use. For example, colors[i] is the color of the point taking i rounds to exit.
 '''
 def m_color(c, max_iter, colors):
     from cImage import Pixel
@@ -44,12 +45,8 @@ All the other parameters are similar to the function m_color().
 '''
 def j_color(c, z0, max_iter, colors):
     from cImage import Pixel
-    
-    # speed up using two facts:
-    if abs(c+1)<0.25 or abs(2-4*c+2*pow(1-4*c,0.5))<1 or abs(2-4*c-2*pow(1-4*c,0.5))<1 :
-        return Pixel(0,0,0)
 
-    # calculate the number of iterations and the return the corresponding color
+    # calculate the number of iterations and then return the corresponding color
     z = z0
     for i in range(max_iter):
         z = z*z + c
@@ -152,7 +149,7 @@ def mandelbrot( ofile = '', \
 Julia set z <- z^2 + c for a given complex c, includes all z0, |z0|<2 such that lim|z|<2
 e.g., try c = (-0.123, 0.745), c = (-0.75,0), c = (-0.391, -0.587).
 
-All the other parameters are similar to the Mandelbrot function.
+All the other parameters are the same as the Mandelbrot function.
 """
 def julia(      c = -0.4+0.6j, \
                 ofile = '', \
@@ -184,7 +181,7 @@ def julia(      c = -0.4+0.6j, \
     import cImage
     from cImage import Pixel
     
-    myimagewindow = cImage.ImageWin('Mandelbrot',width,height)
+    myimagewindow = cImage.ImageWin('Julia',width,height)
     NewImage = cImage.EmptyImage(width,height)
     
     # prepare the colors
@@ -226,8 +223,3 @@ def julia(      c = -0.4+0.6j, \
     if ofile != '' : 
         NewImage.save(ofile)
     myimagewindow.exitOnClick()
-
-
-#
-# if necessary, you can define more functions below 
-#
