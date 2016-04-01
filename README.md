@@ -1,5 +1,7 @@
-# mandelbrot_julia_fractals
+# Mandelbrot Julia Fractals (MJF) Project
+
 This project plots Mandelbrot and Julia sets using Python 3 + cImage.
+The goal is to let everyone freely verify the correctness of fractal images on the Internet.
 
 
 ## Prerequisites
