@@ -22,28 +22,39 @@ For more details please read the parameter specification in the code. More detai
 ==Options==
 
 The definition of the function mandelbrot() is as follows:
-def mandelbrot( ofile, \
-                # the filename to save
-                width, \
-                # width of the plot image (in number of pixels)
-                height, \
-                # height of the plot image (in number of pixels)
-                cx, \
-                # real part of the complex number at the center of the plot
-                cy, \
-                # imaginary part of the complex number at the center of the plot
-                w, \
-                # real part difference between leftmost and rightmost of the plot
-                max_iter, \
-                # number of maximum iterations, the more the better quality, but will take more time
-                gradient, \
-                # the points to define the gradient
-                # 'index' is the number of iteration to exit
-                # the colors will be repeatedly used round by round
-				# one can use 'anchors' to define Bezier curves between the points
-				# the current default settings are heuristic
-				# need to be improved
-                )
+def mandelbrot( 
+
+ofile, \
+# the filename to save
+
+width, \
+# width of the plot image (in number of pixels)
+				
+height, \
+# height of the plot image (in number of pixels)
+				
+cx, \
+# real part of the complex number at the center of the plot
+				
+cy, \
+# imaginary part of the complex number at the center of the plot
+				
+w, \
+# real part difference between leftmost and rightmost of the plot
+				
+max_iter, \
+# number of maximum iterations, the more the better quality, but will take more time
+				
+gradient, \
+'''
+The points to define the gradient.
+The 'index' is the number of iteration to exit.
+The colors will be repeatedly used round by round.
+One can use 'anchors' to define Bezier curves between the points.
+The current default settings are heuristic and need to be improved.
+'''
+
+)
 				
 Note that all the default settings are from Wikipedia article: Mandelbrot set.		
 
