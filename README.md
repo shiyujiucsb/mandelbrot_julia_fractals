@@ -30,7 +30,7 @@ We discuss the parameters for these two main functions.
 The definition of the function mandelbrot() is as follows:
 
 ```python
-def mandelbrot
+def mandelbrot (...): # below are param spec
 ```
 
 * __ofile__: the filename to save
@@ -63,7 +63,7 @@ def mandelbrot
 					{'index':60, 'color':{'R':50, 'G':50, 'B':50}}, \
 					{'index':90, 'color':{'R':100, 'G':100, 'B':100}}, \
 					{'index':120, 'color':{'R':255, 'G':255, 'B':255}} \
-				], \
+				]
 ```
 In this example, we define the gradient of the colors by specifying 5 color points, all of which are greyscale, i.e., R = G = B. 
 For each large round, the color will choose from black to white. All the Bezier curves are straight lines. 
