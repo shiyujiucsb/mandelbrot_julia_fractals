@@ -56,6 +56,14 @@ def mandelbrot (...): # below are the param spec for this function
 	* One can use 'anchors' to define Bezier curves between the points.
 	* The current default settings are heuristic and need to be improved.
 	
+* __density__: given the index __i__ of the rount to exit the iteration, 
+	the index of the gradient the pixel will use is determined by:
+	gradient index = ( __density__ * __i__ + __rotation__) mod max gradient index.
+	That is, density reflects the changing speed of the colors used.
+	The parameter __ratation__ is given below.
+	
+* __rotation__: the inital gradient index that is used by the pixel with exiting index i = 0.
+	
 ### An example of gradient profile
 
 ```python
@@ -77,6 +85,10 @@ For instance,
 The parameters for julia() function are similarly defined, except that the default c is -0.4 + 0.6j.
 				
 Note that all the default settings are from Wikipedia article: Mandelbrot set.		
+
+## Output samples
+
+See the __img__ directory for the output images. Their ideas come from Wikipedia images of Mandelbrot set and Julia sets. More details will follow.
 
 ## Licensing
 
