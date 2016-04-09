@@ -37,6 +37,8 @@ def mandelbrot (...): # below are the param spec for this function
 
 * __ofile__: the filename to save
 
+* __fz__: the iteration function, by default z := z^2 + c
+
 * __width__: width of the plot image (in number of pixels)
 				
 * __height__: height of the plot image (in number of pixels)
@@ -63,6 +65,8 @@ def mandelbrot (...): # below are the param spec for this function
 	The parameter __ratation__ is given below.
 	
 * __rotation__: the inital gradient index that is used by the pixel with exiting index i = 0.
+
+* __mapping__: the function that maps index (round to exit) to the offset of color.
 	
 ### An example of gradient profile
 

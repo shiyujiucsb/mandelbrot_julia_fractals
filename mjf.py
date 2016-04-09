@@ -1,14 +1,40 @@
 #!/usr/bin/python3
- 
-"""
+
+import cImage
+from cImage import Pixel
+from math import log
+
+'''
+Function: the iteration function, by default z := z^2 + c
+'''
+def iter_func(z, c):
+    return z*z + c
+
+'''
+Function: maps index to color offset (by linear)
+'''
+def rount_to_index_linear(index, density, rotation, n_color):
+    return (int(index*density + rotation)%n_color)
+
+'''
+Function: maps index to color offset (by log)
+'''
+def rount_to_index_log(index, density, rotation, n_color):
+    return (int(log(1+index)/log(1+n_color)*n_color)+rotation)%n_color
+
+
+
+'''
 Prelim:
 Mandelbrot set z <- z^2 + c includes all c, |c| < 2 such that lim|z| < 2, where z0 =(0,0) 
 
 Function:
 To plot a mandelbrot set. The parameter details are given below.
-"""
+'''
 def mandelbrot( ofile = '', \
                 # file to save
+                fz = iter_func, \
+                # the iteration function, by default z := z^2 + c
                 width = 960, \
                 # width of the plot image
                 height = 720, \
@@ -22,29 +48,28 @@ def mandelbrot( ofile = '', \
                 max_iter = 50000, \
                 # number of maximum iterations
                 gradient = [\
-                    {'index':0, 'color':{'R':0, 'G':0, 'B':100}},\
+                    {'index':0, 'color':{'R':25, 'G':5, 'B':74}},\
                     {'index':28, 'color':{'R':0, 'G':7, 'B':100}},\
                     {'index':92, 'color':{'R':32, 'G':107, 'B':203}}, \
                     {'index':196, 'color':{'R':237, 'G':255, 'B':255}}, \
-                    {'index':285, 'color':{'R':255, 'G':170, 'B':0}}, \
+                    {'index':285, 'color':{'R':50, 'G':500, 'B':255}}, \
                     {'index':371, 'color':{'R':49, 'G':2, 'B':48}},\
-                    {'index':399, 'color':{'R':0, 'G':0, 'B':100}}
+                    {'index':399, 'color':{'R':24, 'G':4, 'B':74}}
                 ], \
                 # the points to define the gradient
                 # index is the number of iteration to exit
                 # the colors will be repeatedly used for each round
-                density = 4, \
+                density = 0.42, \
                 # color density (on the number of rounds to exit)
-                rotation = 29 \
+                rotation = 29, \
                 # initial (gradient) index to start when coloring
+                mapping = rount_to_index_log \
+                # index mapping function (by default log)
 				) : 
                 
     # check the format of the gradient as input
     if check_gradient_profile(gradient) == False:
         return # means failed the check
-            
-    import cImage
-    from cImage import Pixel
     
     myimagewindow = cImage.ImageWin('Mandelbrot',width,height)
     NewImage = cImage.EmptyImage(width,height)
@@ -58,7 +83,7 @@ def mandelbrot( ofile = '', \
     for i in range(width):
         for j in range(height):
             c = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.setPixel(i,j,m_color(c, max_iter, colors, density, rotation))
+            NewImage.setPixel(i,j,m_color(c, fz, max_iter, colors, density, rotation, mapping))
         # refresh the screen to reflect what've been drawn
         if (i+1)/width > progress/10:
             NewImage.setPosition(0,0)
@@ -80,6 +105,7 @@ All the other parameters are the same as the Mandelbrot function.
 """
 def julia(      c = -0.4+0.6j, \
                 ofile = '', \
+                fz = iter_func, \
                 width = 800, \
                 height = 800, \
                 cx = 0, \
@@ -96,15 +122,13 @@ def julia(      c = -0.4+0.6j, \
                     {'index':500, 'color':{'R':0, 'G':0, 'B':90}}\
                 ], \
                 density = 1, \
-                rotation = 0 \
+                rotation = 0,\
+                mapping = rount_to_index_linear \
         ) :
         
     # check the format of the gradient as input
     if check_gradient_profile(gradient) == False:
         return # means failed the check
-            
-    import cImage
-    from cImage import Pixel
     
     myimagewindow = cImage.ImageWin('Julia',width,height)
     NewImage = cImage.EmptyImage(width,height)
@@ -118,7 +142,7 @@ def julia(      c = -0.4+0.6j, \
     for i in range(width):
         for j in range(height):
             z0 = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.setPixel(i,j,j_color(c, z0, max_iter, colors, density, rotation))
+            NewImage.setPixel(i,j,j_color(c, z0, fz, max_iter, colors, density, rotation, mapping))
         # refresh the screen to reflect what've been drawn
         if (i+1)/width > progress/10:
             NewImage.setPosition(0,0)
@@ -153,12 +177,12 @@ def bezier(t, start, end, anchors):
 Function:
 To determine the color of each pixel for Mandelbrot set.
 
-c is the complex number of the point. max_iter is the maximum number of iterations.
+c is the complex number of the point.
+fz is the iteration function, by default z := z^2 + c.
+max_iter is the maximum number of iterations.
 colors are all the colors to use. For example, colors[i] is the color of the point taking i rounds to exit.
 '''
-def m_color(c, max_iter, colors, density, rotation):
-    from cImage import Pixel
-    from math import log
+def m_color(c, fz, max_iter, colors, density, rotation, mapping):
     
     # speed up using two facts:
     if abs(c+1)<0.25 or abs(2-4*c+2*pow(1-4*c,0.5))<1 or abs(2-4*c-2*pow(1-4*c,0.5))<1 :
@@ -168,9 +192,10 @@ def m_color(c, max_iter, colors, density, rotation):
     # calculate the number of iterations and the return the corresponding color
     z = 0
     for i in range(max_iter):
-        z = z*z + c
+        z = fz(z, c)
         if abs(z) > 2:
-            return colors[int(density*i+rotation)%n_color]
+            index = int(i*density)%n_color
+            return colors[mapping(index, density, rotation, n_color)]
     return Pixel(0,0,0)
 
 '''
@@ -180,16 +205,16 @@ To determine the color of each pixel for Julia set.
 z0 is the initial z for iteration.
 All the other parameters are similar to the function m_color().
 '''
-def j_color(c, z0, max_iter, colors, density, rotation):
-    from cImage import Pixel
+def j_color(c, z0, fz, max_iter, colors, density, rotation, mapping):
 
     n_color = len(colors)
     # calculate the number of iterations and then return the corresponding color
     z = z0
     for i in range(max_iter):
-        z = z*z + c
+        z = fz(z, c)
         if abs(z) > 2:
-            return colors[int(density*i+rotation)%n_color]
+            index = int(i*density)%n_color
+            return colors[mapping(index, density, rotation, n_color)]
     return Pixel(0,0,0)
 
 '''
@@ -201,9 +226,8 @@ Parameters: max_iter is the maximum no. of iterations to observe.
 '''
 def define_colors(gradient):
     # prepare the colors
-    from cImage import Pixel
     colors = []
-    period = gradient[-1]['index']
+    period = gradient[-1]['index']+1
     for i in range(gradient[-1]['index']):
         for j in range(len(gradient)):
             if gradient[j]['index'] > i%period:
