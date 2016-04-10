@@ -13,14 +13,14 @@ def iter_func(z, c):
 '''
 Function: maps index to color offset (by linear)
 '''
-def rount_to_index_linear(index, density, rotation, n_color):
-    return (int(index*density + rotation)%n_color)
+def rount_to_index_linear(index, n_color):
+    return (int(index)%n_color)
 
 '''
 Function: maps index to color offset (by log)
 '''
-def rount_to_index_log(index, density, rotation, n_color):
-    return (int(log(1+index)/log(1+n_color)*n_color)+rotation)%n_color
+def rount_to_index_log(index, n_color):
+    return (int(log(1+index)/log(1+n_color)*n_color))%n_color
 
 
 
@@ -52,9 +52,9 @@ def mandelbrot( ofile = '', \
                     {'index':28, 'color':{'R':0, 'G':7, 'B':100}},\
                     {'index':92, 'color':{'R':32, 'G':107, 'B':203}}, \
                     {'index':196, 'color':{'R':237, 'G':255, 'B':255}}, \
-                    {'index':285, 'color':{'R':50, 'G':500, 'B':255}}, \
+                    {'index':285, 'color':{'R':255, 'G':170, 'B':0}}, \
                     {'index':371, 'color':{'R':49, 'G':2, 'B':48}},\
-                    {'index':399, 'color':{'R':24, 'G':4, 'B':74}}
+                    {'index':399, 'color':{'R':25, 'G':5, 'B':74}},\
                 ], \
                 # the points to define the gradient
                 # index is the number of iteration to exit
@@ -194,8 +194,8 @@ def m_color(c, fz, max_iter, colors, density, rotation, mapping):
     for i in range(max_iter):
         z = fz(z, c)
         if abs(z) > 2:
-            index = int(i*density)%n_color
-            return colors[mapping(index, density, rotation, n_color)]
+            index = int(i*density)
+            return colors[(mapping(index, n_color)+rotation)%n_color]
     return Pixel(0,0,0)
 
 '''
@@ -213,8 +213,8 @@ def j_color(c, z0, fz, max_iter, colors, density, rotation, mapping):
     for i in range(max_iter):
         z = fz(z, c)
         if abs(z) > 2:
-            index = int(i*density)%n_color
-            return colors[mapping(index, density, rotation, n_color)]
+            index = int(i*density)
+            return colors[(mapping(index, n_color)+rotation)%n_color]
     return Pixel(0,0,0)
 
 '''

@@ -8,7 +8,7 @@ This program considers the iteration: z = z^2 + c.
 
 ## Requirements
 
-This program needs **Python** 3.4+ and **cImage**. To install cImage, please follow the link:
+This program needs **Python** 3.4+ with Pillow and **cImage**. To install Pillow and cImage, please follow the link:
 http://wp.stolaf.edu/it/installing-pil-pillow-cimage-on-windows-and-mac/
 
 A few words about the fractals: 
