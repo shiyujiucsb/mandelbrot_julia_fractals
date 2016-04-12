@@ -60,9 +60,9 @@ def mandelbrot (...): # below are the param spec for this function
 	
 * __density__: given the index __i__ of the rount to exit the iteration, 
 	the index of the gradient the pixel will use is determined by:
-	gradient index = ( __density__ * __i__ + __rotation__) mod max gradient index.
+	gradient index = ( __mapping__(__density__ * __i__) + __rotation__) mod max gradient index.
 	That is, density reflects the changing speed of the colors used.
-	The parameter __ratation__ is given below.
+	The parameters __mapping__ and __ratation__ are given below.
 	
 * __rotation__: the inital gradient index that is used by the pixel with exiting index i = 0.
 
@@ -92,7 +92,31 @@ Note that all the default settings are from Wikipedia article: Mandelbrot set.
 
 ## Output samples
 
-See the __img__ directory for the output images. Their ideas come from Wikipedia images of Mandelbrot set and Julia sets. More details will follow.
+See the __img__ directory for the output images. Their ideas come from Wikipedia images of Mandelbrot set and Julia sets. 
+
+Use the following instructions to generate the images in the __img__ directory:
+
+```python
+mandelbrot(width=2560, height=1920, cx=-.7, cy=0, w=3.0769, max_iter=50000, ofile='mandel_wiki_zoom_00.png')
+mandelbrot(width=2560, height=1920, cx=-.87591, cy=.20464, w=.53184, max_iter=50000, ofile='mandel_wiki_zoom_01.png')
+mandelbrot(width=2560, height=1920, cx=-.759856, cy=.125547, w=.051579, max_iter=50000, ofile='mandel_wiki_zoom_02.png')
+mandelbrot(width=2560, height=1920, cx=-.743030, cy=.126433, w=.016110, max_iter=50000, ofile='mandel_wiki_zoom_03.png')
+mandelbrot(width=2560, height=1920, cx=-.7435669, cy=.1314023, w=.0022878, max_iter=50000, ofile='mandel_wiki_zoom_04.png')
+mandelbrot(width=2560, height=1920, cx=-.74364990, cy=.13188204, w=.00073801, max_iter=50000, ofile='mandel_wiki_zoom_05.png')
+mandelbrot(width=2560, height=1920, cx=-.74364085, cy=.13182733, w=.00012068, max_iter=50000, ofile='mandel_wiki_zoom_06.png')
+mandelbrot(width=2560, height=1920, cx=-.743643135, cy=.131825963, w=.000014628, max_iter=50000, ofile='mandel_wiki_zoom_07.png')
+mandelbrot(width=2560, height=1920, cx=-.743644786, cy=.1318252536, w=.0000029336, max_iter=50000, ofile='mandel_wiki_zoom_08.png')
+mandelbrot(width=2560, height=1920, cx=-.74364409961, cy=.13182604688, w=.00000066208, max_iter=50000, ofile='mandel_wiki_zoom_09.png')
+mandelbrot(width=2560, height=1920, cx=-.74364386269, cy=.13182590271, w=.00000013526, max_iter=50000, ofile='mandel_wiki_zoom_10.png')
+mandelbrot(width=2560, height=1920, cx=-.743643900055, cy=.131825890901, w=.000000049304, max_iter=50000, ofile='mandel_wiki_zoom_11.png')
+mandelbrot(width=2560, height=1920, cx=-.7436438885706, cy=.1318259043124, w=.0000000041493, max_iter=50000, ofile='mandel_wiki_zoom_12.png')
+mandelbrot(width=2560, height=1920, cx=-.74364388717342, cy=.13182590425182, w=.00000000059849, max_iter=50000, ofile='mandel_wiki_zoom_13.png')
+mandelbrot(width=2560, height=1920, cx=-.743643887037151, cy=.13182590420533, w=.000000000051299, max_iter=50000, ofile='mandel_wiki_zoom_14.png')
+```
+
+All the parameters come from Wikipedia. The samples are high qualified. To generate each of them it may take several hours.
+
+More details will follow.
 
 ## Licensing
 
