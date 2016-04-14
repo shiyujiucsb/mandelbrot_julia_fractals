@@ -119,9 +119,9 @@ def julia(      c = -0.4+0.6j, \
                     {'index':196, 'color':{'R':237, 'G':255, 'B':255}}, \
                     {'index':285, 'color':{'R':255, 'G':170, 'B':0}}, \
                     {'index':371, 'color':{'R':49, 'G':2, 'B':48}},\
-                    {'index':500, 'color':{'R':0, 'G':0, 'B':90}}\
+                    {'index':400, 'color':{'R':0, 'G':0, 'B':90}}\
                 ], \
-                density = 1, \
+                density = 3, \
                 rotation = 0,\
                 mapping = rount_to_index_linear \
         ) :
