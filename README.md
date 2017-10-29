@@ -1,6 +1,6 @@
 # Mandelbrot Julia Fractals (MJF) Project
 
-This project plots Mandelbrot and Julia sets using Python 3 + cImage.
+This project plots Mandelbrot and Julia sets using Python 3 + PIL.
 The goal is to let everyone freely verify the correctness of fractal images on the Internet.
 Wikipedia gives great articles and references about the related concepts here. 
 This program considers the iteration: z = z^2 + c.
@@ -8,8 +8,7 @@ This program considers the iteration: z = z^2 + c.
 
 ## Requirements
 
-This program needs **Python** 3.4+ with Pillow and **cImage**. To install Pillow and cImage, please follow the link:
-http://wp.stolaf.edu/it/installing-pil-pillow-cimage-on-windows-and-mac/
+This program needs **Python** 3.4+ with Pillow and **Python Imaging Library (PIL)**. 
 
 A few words about the fractals: 
 * Each point within the Mandelbrot/Julia set is supposed to be __black__.
