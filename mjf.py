@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 
-from PIL import Image as Image
+try:
+    from PIL import Image as Image
+except:
+    print("Need install PIL: pip install PIL")
+    exit()
 from math import log
 
 
@@ -80,7 +84,7 @@ def mandelbrot( ofile = '', \
     for i in range(width):
         for j in range(height):
             c = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.putpixel((width-1-i, height-1-j), m_color(c, fz, max_iter, colors, density, rotation, mapping))
+            NewImage.putpixel((i, height-1-j), m_color(c, fz, max_iter, colors, density, rotation, mapping))
     if ofile != '' : 
         NewImage.save(ofile)
 
@@ -128,7 +132,7 @@ def julia(      c = -0.4+0.6j, \
     for i in range(width):
         for j in range(height):
             z0 = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.putpixel((width-1-i, height-1-j), j_color(c, z0, fz, max_iter, colors, density, rotation, mapping))
+            NewImage.putpixel((i, height-1-j), j_color(c, z0, fz, max_iter, colors, density, rotation, mapping))
     if ofile != '' : 
         NewImage.save(ofile)
 
