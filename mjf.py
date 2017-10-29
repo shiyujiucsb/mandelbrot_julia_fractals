@@ -83,8 +83,11 @@ def mandelbrot( ofile = '', \
     # plot the set
     for i in range(width):
         for j in range(height):
-            c = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.putpixel((i, height-1-j), m_color(c, fz, max_iter, colors, density, rotation, mapping))
+            c = cx + cy * 1j
+            c += (i-width//2)/width*w - ((j-height//2)/height*h)*1j
+            pixelColor = m_color( \
+                    c, fz, max_iter, colors, density, rotation, mapping)
+            NewImage.putpixel((i, height-1-j), pixelColor)
     if ofile != '' : 
         NewImage.save(ofile)
 
@@ -131,8 +134,11 @@ def julia(      c = -0.4+0.6j, \
     # plot the set
     for i in range(width):
         for j in range(height):
-            z0 = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.putpixel((i, height-1-j), j_color(c, z0, fz, max_iter, colors, density, rotation, mapping))
+            z0 = cx + cy * 1j
+            z0 += (i-width//2)/width*w - ((j-height//2)/height*h)*1j
+            pixelColor =  j_color( \
+                    c, z0, fz, max_iter, colors, density, rotation, mapping)
+            NewImage.putpixel((i, height-1-j), pixelColor)
     if ofile != '' : 
         NewImage.save(ofile)
 
@@ -151,9 +157,12 @@ def bezier(t, start, end, anchors):
         return (1-t)*start['R'] + t*end['R'], \
                (1-t)*start['G'] + t*end['G'], \
                (1-t)*start['B'] + t*end['B']
-    return (1-t)*bezier(t, start, anchors[-1], anchors[:-1])[0] + t*bezier(t, anchors[0], end, anchors[1:])[0], \
-           (1-t)*bezier(t, start, anchors[-1], anchors[:-1])[1] + t*bezier(t, anchors[0], end, anchors[1:])[1], \
-           (1-t)*bezier(t, start, anchors[-1], anchors[:-1])[2] + t*bezier(t, anchors[0], end, anchors[1:])[2]
+    return (1-t)*bezier(t, start, anchors[-1], \
+            anchors[:-1])[0] + t*bezier(t, anchors[0], end, anchors[1:])[0], \
+           (1-t)*bezier(t, start, anchors[-1], \
+           anchors[:-1])[1] + t*bezier(t, anchors[0], end, anchors[1:])[1], \
+           (1-t)*bezier(t, start, anchors[-1], \
+           anchors[:-1])[2] + t*bezier(t, anchors[0], end, anchors[1:])[2]
 
 '''
 Function:
@@ -167,7 +176,9 @@ colors are all the colors to use. For example, colors[i] is the color of the poi
 def m_color(c, fz, max_iter, colors, density, rotation, mapping):
     
     # speed up using two facts:
-    if fz == iter_func and (abs(c+1)<0.25 or abs(2-4*c+2*pow(1-4*c,0.5))<1 or abs(2-4*c-2*pow(1-4*c,0.5))<1) :
+    if fz == iter_func and \
+            (abs(c+1)<0.25 or abs(2-4*c+2*pow(1-4*c,0.5))<1 \
+                or abs(2-4*c-2*pow(1-4*c,0.5))<1) :
         return (0,0,0)
 
     n_color = len(colors)
