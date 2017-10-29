@@ -72,7 +72,6 @@ def mandelbrot( ofile = '', \
         return # means failed the check
     
     NewImage = Image.new('RGB', (width, height), (255, 255, 255))
-    pixels = NewImage.load()
     colors = define_colors(gradient)
 
     # imaginary part difference between top and bottom
@@ -81,7 +80,7 @@ def mandelbrot( ofile = '', \
     for i in range(width):
         for j in range(height):
             c = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            pixels[i,j] = m_color(c, fz, max_iter, colors, density, rotation, mapping)
+            NewImage.putpixel((width-1-i, height-1-j), m_color(c, fz, max_iter, colors, density, rotation, mapping))
     if ofile != '' : 
         NewImage.save(ofile)
 
@@ -121,7 +120,6 @@ def julia(      c = -0.4+0.6j, \
         return # means failed the check
     
     NewImage = Image.new('RGB', (width, height), (255, 255, 255))
-    pixels = NewImage.load()
     colors = define_colors(gradient)
 
     # imaginary part difference between top and bottom
@@ -130,7 +128,7 @@ def julia(      c = -0.4+0.6j, \
     for i in range(width):
         for j in range(height):
             z0 = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            pixels[i,j] = j_color(c, z0, fz, max_iter, colors, density, rotation, mapping)
+            NewImage.putpixel((width-1-i, height-1-j), j_color(c, z0, fz, max_iter, colors, density, rotation, mapping))
     if ofile != '' : 
         NewImage.save(ofile)
 
@@ -165,7 +163,7 @@ colors are all the colors to use. For example, colors[i] is the color of the poi
 def m_color(c, fz, max_iter, colors, density, rotation, mapping):
     
     # speed up using two facts:
-    if abs(c+1)<0.25 or abs(2-4*c+2*pow(1-4*c,0.5))<1 or abs(2-4*c-2*pow(1-4*c,0.5))<1 :
+    if fz == iter_func and (abs(c+1)<0.25 or abs(2-4*c+2*pow(1-4*c,0.5))<1 or abs(2-4*c-2*pow(1-4*c,0.5))<1) :
         return (0,0,0)
 
     n_color = len(colors)
