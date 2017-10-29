@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-import cImage
-from cImage import Pixel
+from PIL import Image as Image
 from math import log
+
 
 '''
 Function: the iteration function, by default z := z^2 + c
@@ -71,29 +71,19 @@ def mandelbrot( ofile = '', \
     if check_gradient_profile(gradient) == False:
         return # means failed the check
     
-    myimagewindow = cImage.ImageWin('Mandelbrot',width,height)
-    NewImage = cImage.EmptyImage(width,height)
-    
+    NewImage = Image.new('RGB', (width, height), (255, 255, 255))
+    pixels = NewImage.load()
     colors = define_colors(gradient)
 
     # imaginary part difference between top and bottom
     h = w/width*height
     # plot the set
-    progress = 1
     for i in range(width):
         for j in range(height):
             c = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.setPixel(i,j,m_color(c, fz, max_iter, colors, density, rotation, mapping))
-        # refresh the screen to reflect what've been drawn
-        if (i+1)/width > progress/10:
-            NewImage.setPosition(0,0)
-            NewImage.draw(myimagewindow)
-            progress += 1
-    NewImage.setPosition(0,0)
-    NewImage.draw(myimagewindow)
+            pixels[i,j] = m_color(c, fz, max_iter, colors, density, rotation, mapping)
     if ofile != '' : 
         NewImage.save(ofile)
-    myimagewindow.exitOnClick()
 
 
 """
@@ -130,29 +120,19 @@ def julia(      c = -0.4+0.6j, \
     if check_gradient_profile(gradient) == False:
         return # means failed the check
     
-    myimagewindow = cImage.ImageWin('Julia',width,height)
-    NewImage = cImage.EmptyImage(width,height)
-    
+    NewImage = Image.new('RGB', (width, height), (255, 255, 255))
+    pixels = NewImage.load()
     colors = define_colors(gradient)
 
     # imaginary part difference between top and bottom
     h = w/width*height
     # plot the set
-    progress = 1
     for i in range(width):
         for j in range(height):
             z0 = cx+(i-width//2)/width*w - ((j-height//2)/height*h - cy)*1j
-            NewImage.setPixel(i,j,j_color(c, z0, fz, max_iter, colors, density, rotation, mapping))
-        # refresh the screen to reflect what've been drawn
-        if (i+1)/width > progress/10:
-            NewImage.setPosition(0,0)
-            NewImage.draw(myimagewindow)
-            progress += 1
-    NewImage.setPosition(0,0)
-    NewImage.draw(myimagewindow)
+            pixels[i,j] = j_color(c, z0, fz, max_iter, colors, density, rotation, mapping)
     if ofile != '' : 
         NewImage.save(ofile)
-    myimagewindow.exitOnClick()
 
 
 
@@ -186,7 +166,7 @@ def m_color(c, fz, max_iter, colors, density, rotation, mapping):
     
     # speed up using two facts:
     if abs(c+1)<0.25 or abs(2-4*c+2*pow(1-4*c,0.5))<1 or abs(2-4*c-2*pow(1-4*c,0.5))<1 :
-        return Pixel(0,0,0)
+        return (0,0,0)
 
     n_color = len(colors)
     # calculate the number of iterations and the return the corresponding color
@@ -196,7 +176,7 @@ def m_color(c, fz, max_iter, colors, density, rotation, mapping):
         if abs(z) > 2:
             index = int(i*density)
             return colors[(mapping(index, n_color)+rotation)%n_color]
-    return Pixel(0,0,0)
+    return (0,0,0)
 
 '''
 Function:
@@ -215,7 +195,7 @@ def j_color(c, z0, fz, max_iter, colors, density, rotation, mapping):
         if abs(z) > 2:
             index = int(i*density)
             return colors[(mapping(index, n_color)+rotation)%n_color]
-    return Pixel(0,0,0)
+    return (0,0,0)
 
 '''
 Function:
@@ -244,7 +224,7 @@ def define_colors(gradient):
         R = 0 if R<0 else 255 if R>255 else R
         G = 0 if G<0 else 255 if G>255 else G
         B = 0 if B<0 else 255 if B>255 else B
-        colors.append(Pixel(int(R), int(G), int(B)))
+        colors.append((int(R), int(G), int(B)))
     return colors
 
 '''
