@@ -1,6 +1,6 @@
 # Mandelbrot Julia Fractals (MJF) Project
 
-This project plots Mandelbrot and Julia sets using Python 3 + PIL.
+This project plots Mandelbrot and Julia sets using Python + PIL.
 The goal is to let everyone freely verify the correctness of fractal images on the Internet.
 Wikipedia gives great articles and references about the related concepts here. 
 This program considers the iteration: z = z^2 + c.
@@ -8,7 +8,7 @@ This program considers the iteration: z = z^2 + c.
 
 ## Requirements
 
-This program needs **Python** 3.4+ with Pillow and **Python Imaging Library (PIL)**. 
+This program needs **Python** (2.6+ or 3+) with Pillow and **Python Imaging Library (PIL)**. 
 
 A few words about the fractals: 
 * Each point within the Mandelbrot/Julia set is supposed to be __black__.
@@ -114,6 +114,8 @@ mandelbrot(width=2560, height=1920, cx=-.743643887037151, cy=.13182590420533, w=
 ```
 
 All the parameters come from Wikipedia. The samples are high qualified. To generate each of them it may take several hours.
+
+burning_ship.py and genFrames.py give examples on how to generate burning ship fractals. 
 
 More details will follow.
 
